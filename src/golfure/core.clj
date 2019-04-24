@@ -61,6 +61,6 @@
          ~'Tp ~(fn [& args] (apply map list args))]
      ~@forms))
 
-(assert (= (golfure-eval (x f (o N e)) (G f (F (Y "ABC") (A 10) [i j])))
+(assert (= (golfure-eval (p f (o N e)) (G f (F (Y "ABC") (A 10) [i j])))
            {\A [[\A 0] [\A 3] [\A 6] [\A 9]], \B [[\B 1] [\B 4] [\B 7]], \C [[\C 2] [\C 5] [\C 8]]}))
 
