@@ -29,7 +29,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Here is a oneliner:
-(do (-> "https://raw.githubusercontent.com/nikonyrh/golfure/master/src/golfure/core.clj" slurp (subs 39) load-string)
+(do (-> "https://raw.githubusercontent.com/nikonyrh/golfure/v0.1.1/src/golfure/core.clj" slurp (subs 39) load-string)
     "OK!")
 
 
@@ -57,7 +57,7 @@
 ;         distinquished from "sequence expressions". Maybe with a special indicator.
 ;
 (def f               (fn f[s](if(=()s)0(+(apply min(for[i(range(count s))[a b][(split-at(inc i)s)]:when(=(reverse a)a)](f b)))1))))
-(def f (golfure-eval (H :g s(if(=()s)0(+(A min(for[i(A(N s))[a b][(Sa(inc i)s)]:when(=(V a)a)](f b)))1)))))
+(def f (golfure-eval (H :g s(if(=()s)0(+(A min(for[i(A(N s))[a b][(Sa(inc i)s)]:when(=(V a)a)](g b)))1)))))
 
 ;;;;;;;;;;;
 ; https://codegolf.stackexchange.com/a/106594/59617
