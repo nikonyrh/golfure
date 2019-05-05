@@ -1,9 +1,12 @@
 (ns golfure.core)
 "There be dragons."
 
+(def macroexpand-all clojure.walk/macroexpand-all)
+
 (defmacro F
   [& forms]
   (if (or (-> forms first symbol? not)
+          (->> forms first ('#{% %2 %3 %4 %5}))
           (-> forms count (= 2)))
    `(F ~'i ~@forms) ; Defaulting to start symbols from i
    (let [[first-sym & seqs] (butlast forms)
@@ -13,7 +16,7 @@
                     (take (count seqs))
                     vec)]
      `(for [~syms (map list ~@seqs)]
-        ~(last forms)))))
+       ~(-> forms last macroexpand-all)))))
 
 (assert (= (F (range 3) (* i 2)) '(0 2 4)))
 (assert (= (F [1 2 3] [30 20 10] (/ (+ i 1) (+ j 1))) '(2/31 1/7 4/11)))
@@ -23,6 +26,7 @@
 (defmacro G
   [& forms]
   (if (or (-> forms first symbol? not)
+          (-> forms first ('#{% %2 %3 %4 %5}))
           (-> forms count (= 2)))
    `(G ~'i ~@forms) ; Defaulting to start symbols from i
    (let [[first-sym & seqs] (butlast forms)
@@ -31,14 +35,18 @@
                     (map  (comp symbol str char))
                     (take (count seqs)))]
      `(for [~@(interleave syms seqs)]
-        ~(last forms)))))
+       ~(-> forms last macroexpand-all)))))
 
 (assert (= (G [1 2 3] [30 20 10] [i j]) '([1 30] [1 20] [1 10] [2 30] [2 20] [2 10] [3 30] [3 20] [3 10])))
 (assert (= (G x (range 1 4) "ABC" (repeat x y) z)) '(\A \B \C \A \A \B \B \C \C \A \A \A \B \B \B \C \C \C))
 (assert (= (G (range 4) (range 4) (range (max i j)) k) '(0 0 1 0 1 2 0 0 0 1 0 1 2 0 1 0 1 0 1 0 1 2 0 1 2 0 1 2 0 1 2 0 1 2)))
 
 
-(defmacro H [& forms] `(fn ~(vec (butlast forms)) ~(last forms)))
+(defmacro H [& forms]
+  (if (keyword? (first forms))
+    (let [[name-kw & forms] forms]
+      `(fn ~(-> name-kw name symbol) ~(vec (butlast forms)) ~(macroexpand-all (last forms))))
+    `(fn ~(vec (butlast forms)) ~(macroexpand-all (last forms)))))
 
 (assert (= (map (H i j (str i " &" j)) [1 2 3] [30 20 10]) '("1 &30" "2 &20" "3 &10")))
 
