@@ -15,11 +15,14 @@ you use special forms like `let` or `for`.
 
 ## Examples
 
-To-be added.
+Source file: [examples.clj](src/golfure/examples.clj)
 
-There are a few `assert`s within the source code so have a peek there if you are curious.
+There are a few `assert`s within the [source code](src/golfure/core.clj) so have a peek there if you are curious.
 
 ## How to run a Golfure script
 
-To-be added.
+Loading the source code to the current namespace:
 
+```(-> "https://raw.githubusercontent.com/nikonyrh/golfure/v0.1.1/src/golfure/core.clj" slurp (subs 39) load-string)```
+
+Then simply evaluate the code by using the `golfure-eval` macro.
